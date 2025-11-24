@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="general/style.css">
-
     <title>Turkish Dinner</title>
     
 </head>
-
 <body>
 
 <?php
@@ -35,12 +33,13 @@ function todaysDate() {
 <div class="content">
     <h2>Authentic Turkish Food Experience</h2>
     <p>Enjoy delicious traditional Turkish meals, prepared with love and rich flavors.</p>
-        <div class="image-row">
+
+        <div class="image-container">
             <img src="image/turkish-food.jpg" alt="Turkish Dinner Image">
             <img src="image/turkish-seafood.jpg" alt="Turkish Seafood Image">
             <img src="image/turkish-dessert.jpg" alt="Turkish Dessert Image">
         </div>
-        </div>
+</div>
 
 </body>
 </html>

@@ -37,13 +37,13 @@ nav a:hover {
     text-align: center;
 }
 
-.image-row {
+.image-container {
     display: flex;
     justify-content: center;
     gap: 20px;
 }
 
-.image-row img {
+.image-container img {
     width: 450px;
     height: 250px;
     object-fit: cover;   
