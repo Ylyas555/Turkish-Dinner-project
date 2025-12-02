@@ -34,7 +34,7 @@ nav a:hover {
 
 .content {
     padding: 30px;
-    text-align: center;
+    text-align: left;
 }
 
 .image-container {
@@ -49,4 +49,30 @@ nav a:hover {
     object-fit: cover;   
     border-radius: 10px;
 }
+/* Excel-like product table */
+.product-table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse; /* merge borders */
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    color: #b22222;
+    font-weight: bold;
+}
 
+.product-table th,
+.product-table td {
+    border: 1px solid #b22222; /* visible borders for all cells */
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.product-table th {
+    background-color: #b22222; /* dark red header */
+    color: white;
+}
+
+.product-table tr:hover {
+    background-color: #f0e0d6; /* hover effect */
+}
