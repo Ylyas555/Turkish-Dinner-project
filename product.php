@@ -18,11 +18,6 @@ $products = [
     ["name" => "Turkish coffee", "price" => 1, "siding" => "Sugar", "wait" => 10]
 ];
 
-/* ---------------------------------------------------------
-    navigation arrays (captions and links)
-------------------------------------------------------- */
-$navCaptions = ["Home", "Contacts", "Products", "Order Now"];
-$navLinks    = ["index.php", "contact.php", "product.php", "order.php"];
 ?>
 
 <!DOCTYPE html>
@@ -41,19 +36,11 @@ $navLinks    = ["index.php", "contact.php", "product.php", "order.php"];
     <p>Fresh, delicious, and served with traditional sidings.</p>
 </header>
 
-<!-- ------------------------------------------------
-     navigation built using the nav arrays
------------------------------------------------------- -->
-<nav>
-    <?php
-        for ($i = 0; $i < count($navCaptions); $i++) {
-            echo "<a href='{$navLinks[$i]}'>{$navCaptions[$i]}</a>";
-        }
-    ?>
-</nav>
+<?php include "inc_welcome.php"; ?>
+<?php include "inc_navigation.php"; ?>
 
 <!-- -----------------------------------------------------
-      display food menu table
+       food menu table
 ------------------------------------------------------ -->
 <div class="content">
     <h2>Menu Items</h2>
@@ -67,18 +54,17 @@ $navLinks    = ["index.php", "contact.php", "product.php", "order.php"];
         <th>Wait-time-min</th>
     </tr>
     <?php
-    foreach ($products as $item) {
-        echo "<tr>";
-        echo "<td>{$item['name']}</td>";
-        echo "<td>{$item['price']}</td>";
-        echo "<td>{$item['siding']}</td>";
-        echo "<td>{$item['wait']}</td>";
-        echo "</tr>";
-    }
-    ?>
+    foreach ($products as $item): ?>
+    <tr>
+                <td><?= $item['name'] ?></td>
+                <td><?= $item['price'] ?></td>
+                <td><?= $item['siding'] ?></td>
+                <td><?= $item['wait'] ?></td>
+    </tr>
+    <?php endforeach; ?>
 </table>
 
 </div>
-
+        <?php include "inc_footer.php"; ?>
 </body>
 </html>
