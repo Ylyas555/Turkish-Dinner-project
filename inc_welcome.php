@@ -1,9 +1,8 @@
 <?php
-// PART 1
-$isLogin = true;     // change to true if user logs in
-$username = "Ylyas";    
+session_start(); // start session
 
-if ($isLogin === true && $username !== null) {
+if (!empty($_SESSION['isLogin']) && !empty($_SESSION['username'])) {
+    $username = $_SESSION['username'];
     echo "<p style='text-align:center; font-weight:bold; color:green;'>
             Welcome back, $username!
           </p>";

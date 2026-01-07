@@ -49,11 +49,11 @@ nav a:hover {
     object-fit: cover;   
     border-radius: 10px;
 }
-/* Excel-like product table */
+/* This part is for product.php */
 .product-table {
     width: 90%;
     margin: 20px auto;
-    border-collapse: collapse; /* merge borders */
+    border-collapse: collapse; 
     background-color: #fff;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
     color: #b22222;
@@ -62,17 +62,18 @@ nav a:hover {
 
 .product-table th,
 .product-table td {
-    border: 1px solid #b22222; /* visible borders for all cells */
+    border: 1px solid #b22222; 
     padding: 10px;
     text-align: center;
     font-size: 16px;
 }
 
 .product-table th {
-    background-color: #b22222; /* dark red header */
+    background-color: #b22222; 
     color: white;
 }
 
 .product-table tr:hover {
-    background-color: #f0e0d6; /* hover effect */
+    background-color: #f0e0d6; 
 }
+/* End of product.php part */

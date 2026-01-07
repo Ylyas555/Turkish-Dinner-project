@@ -1,5 +1,5 @@
 <?php
-// PART 2 — Navigation arrays
+
 $navCaptions = ["Home", "Contacts", "Products", "Order Now"];
 $navLinks    = ["index.php", "contact.php", "product.php", "order.php"];
 
