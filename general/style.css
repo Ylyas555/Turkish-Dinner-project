@@ -77,3 +77,9 @@ nav a:hover {
     background-color: #f0e0d6; 
 }
 /* End of product.php part */
+form .login-button {
+    margin-bottom: 30px; 
+}
+form {
+    margin-bottom: 30px;  /* This will add space below the entire form, including the button */
+}
