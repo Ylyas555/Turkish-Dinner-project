@@ -10,6 +10,8 @@
     array containing product data
     each item includes Name, Price in dollars, Sidings for free, Wait-time-min
 ----------------------------------------- */
+
+// Part 2 for UNIT 7
 $products = [
     ["name" => "Kebap", "price" => 4, "siding" => "Bread and tea", "wait" => 20],
     ["name" => "Pide", "price" => 2, "siding" => "Tea", "wait" => 10],
