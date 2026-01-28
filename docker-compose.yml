@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: turkish_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ymdatabase
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./scripts:/scripts
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: turkish_phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8081:80"

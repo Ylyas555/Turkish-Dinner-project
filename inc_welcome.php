@@ -1,5 +1,5 @@
 <?php
-session_start(); 
+session_start();
 
 if (!empty($_SESSION['isLogin']) && !empty($_SESSION['username'])) {
     $username = $_SESSION['username'];

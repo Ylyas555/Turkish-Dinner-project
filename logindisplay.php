@@ -1,19 +1,19 @@
 <?php
 session_start();
 
-// Initialize login success flag
+// initializing login success 
 $loginSuccess = false;
 $isCreating = false;
 
-// Check if the "create" button is pressed (for new user creation)
+// check if the "create" button is pressed (for new user creation)
 if (isset($_POST['create'])) {
     $newUsername = trim($_POST['username']);
     $newPassword = trim($_POST['password']);
 
-    // Open password.txt to add new user
+    // open password.txt to add new user
     $file = fopen("password.txt", "a");
     if ($file) {
-        // Add the new user and password
+        // add the new user and password
         fwrite($file, "\n" . $newUsername . "," . $newPassword);
         fclose($file);
         echo "<p>Account created successfully. You are now logged in!</p>";
@@ -24,13 +24,13 @@ if (isset($_POST['create'])) {
         echo "<p style='color:red;'>Error creating account.</p>";
     }
 } else {
-    // Proceed with login process if "create" button was not pressed
+    // proceed with login process if "create" button was not pressed
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Sanitize user input
+        // sanitize user input
         $username = trim($_POST['username']);
         $password = trim($_POST['password']);
 
-        // Read password.txt into an array
+        // read password.txt into an array
         $lines = file("password.txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
         // Loop through file to validate login
@@ -43,7 +43,7 @@ if (isset($_POST['create'])) {
             }
         }
 
-        // Store login result in session
+        // store login result in session
         if ($loginSuccess) {
             $_SESSION['username'] = $username;
             $_SESSION['isLogin'] = true;
