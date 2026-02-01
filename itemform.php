@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Item Form</title>
+    <title>Add Item</title>
     <link rel="stylesheet" href="general/style.css">
     <style>
         .error { color: red; }
@@ -10,76 +10,140 @@
     </style>
 </head>
 <body>
-    <?php include "inc_navigation.php"; ?>
 
-    <div class="content">
-        <h2>Add Item</h2>
+<?php include "inc_navigation.php"; ?>
 
-        <?php
-        $name = $price = $category = "";
-        $available = "";
-        $errors = [];
+<div class="content">
+    <h2>Add Item</h2>
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+<?php
+/* ===============================
+   DATABASE CONNECTION
+================================ */
+$host = "127.0.0.1";
+$dbname = "ymdatabase";
+$user = "root";
+$pass = "root";
 
-            if (empty($_POST['name'])) {
-                $errors['name'] = "Item name is required.";
-            } else {
-                $name = htmlspecialchars($_POST['name']);
-            }
+try {
+    $pdo = new PDO(
+        "mysql:host=$host;dbname=$dbname;charset=utf8",
+        $user,
+        $pass
+    );
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("<p class='error'>Database connection failed: " . $e->getMessage() . "</p>");
+}
 
-            if (empty($_POST['price'])) {
-                $errors['price'] = "Price is required.";
-            } elseif (!is_numeric($_POST['price'])) {
-                $errors['price'] = "Price must be a number.";
-            } else {
-                $price = $_POST['price'];
-            }
+/* ===============================
+   FORM VARIABLES
+================================ */
+$name = $price = $category = "";
+$available = "No";
+$errors = [];
+$successMessage = "";
 
-            if (empty($_POST['category'])) {
-                $errors['category'] = "Category must be selected.";
-            } else {
-                $category = $_POST['category'];
-            }
+/* ===============================
+   FORM SUBMISSION
+================================ */
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            $available = isset($_POST['available']) ? "Yes" : "No";
+    // Item name
+    if (empty($_POST["name"])) {
+        $errors["name"] = "Item name is required.";
+    } else {
+        $name = trim($_POST["name"]);
+    }
 
-            if (empty($errors)) {
-                echo "<h3>Form Accepted</h3>";
-                echo "<p><strong>Item Name:</strong> $name</p>";
-                echo "<p><strong>Price:</strong> $price</p>";
-                echo "<p><strong>Category:</strong> $category</p>";
-                echo "<p><strong>Available:</strong> $available</p>";
-                echo "<hr>";
+    // Price
+    if (empty($_POST["price"])) {
+        $errors["price"] = "Price is required.";
+    } elseif (!is_numeric($_POST["price"])) {
+        $errors["price"] = "Price must be numeric.";
+    } else {
+        $price = $_POST["price"];
+    }
 
-                // Clear form values after successful submission
-                $name = $price = $category = $available = "";
-            }
+    // Category
+    if (empty($_POST["category"])) {
+        $errors["category"] = "Category is required.";
+    } else {
+        $category = $_POST["category"];
+    }
+
+    // Available
+    $available = isset($_POST["available"]) ? "Yes" : "No";
+
+    /* ===============================
+       INSERT INTO DATABASE
+    ================================ */
+    if (empty($errors)) {
+        try {
+            $sql = "INSERT INTO items (name, price, category, available)
+                    VALUES (:name, :price, :category, :available)";
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ":name" => $name,
+                ":price" => $price,
+                ":category" => $category,
+                ":available" => $available
+            ]);
+
+            $successMessage = "Item successfully added to database.";
+
+            // Clear form
+            $name = $price = $category = "";
+            $available = "No";
+
+        } catch (PDOException $e) {
+            echo "<p class='error'>Database error: {$e->getMessage()}</p>";
         }
-        ?>
+    }
+}
+?>
 
-        <form action="" method="post">
-            <label for="name">Item Name:</label>
-            <input type="text" name="name" id="name" value="<?= $name ?>">
-            <span class="error"><?= $errors['name'] ?? "" ?></span><br>
+<!-- ===============================
+     SUCCESS MESSAGE
+================================ -->
+<?php if ($successMessage): ?>
+    <p style="color:green; font-weight:bold;">
+        <?= $successMessage ?>
+    </p>
+<?php endif; ?>
 
-            <label for="price">Price ($):</label>
-            <input type="text" name="price" id="price" value="<?= $price ?>">
-            <span class="error"><?= $errors['price'] ?? "" ?></span><br>
+<!-- ===============================
+     FORM
+================================ -->
+<form method="post">
 
-            <label>Category:</label>
-            <input type="radio" name="category" value="Food" <?= ($category=="Food")?"checked":"" ?>>Food
-            <input type="radio" name="category" value="Drink" <?= ($category=="Drink")?"checked":"" ?>>Drink
-            <input type="radio" name="category" value="Dessert" <?= ($category=="Dessert")?"checked":"" ?>>Dessert
-            <span class="error"><?= $errors['category'] ?? "" ?></span><br>
+    <label>Item Name:</label><br>
+    <input type="text" name="name" value="<?= htmlspecialchars($name) ?>">
+    <span class="error"><?= $errors["name"] ?? "" ?></span><br>
 
-            <label>Available:</label>
-            <input type="checkbox" name="available" <?= ($available=="Yes")?"checked":"" ?>><br><br>
+    <label>Price ($):</label><br>
+    <input type="text" name="price" value="<?= htmlspecialchars($price) ?>">
+    <span class="error"><?= $errors["price"] ?? "" ?></span><br>
 
-            <input type="submit" value="Submit">
-        </form>
-    </div>
+    <label>Category:</label><br>
+    <input type="radio" name="category" value="Food" <?= ($category=="Food")?"checked":"" ?>> Food
+    <input type="radio" name="category" value="Drink" <?= ($category=="Drink")?"checked":"" ?>> Drink
+    <input type="radio" name="category" value="Dessert" <?= ($category=="Dessert")?"checked":"" ?>> Dessert
+    <span class="error"><?= $errors["category"] ?? "" ?></span><br><br>
 
-    <?php include "inc_footer.php"; ?>
+    <label>
+        <input type="checkbox" name="available" <?= ($available=="Yes")?"checked":"" ?>>
+        Available
+    </label><br><br>
+
+    <input type="submit" value="Add Item">
+
+</form>
+
+</div>
+
+<?php include "inc_footer.php"; ?>
+
 </body>
 </html>
