@@ -7,7 +7,7 @@
 session_start();
 if (empty($_SESSION['isLogin']) || $_SESSION['isLogin'] !== true) {
     echo "<p style='text-align:center; color:red; font-weight:bold;'>
-            You are not logged in. Please <a href='loginform.php'>log in</a> to access this page.
+            You are not logged in. Please <a href='login.php'>log in</a> to access this page.
           </p>";
     exit();
 }

@@ -1,10 +1,24 @@
 <?php
+/*
+----------------------------------------------------
+WELCOME MESSAGE
+Uses:
+- SESSION: isLogin (Boolean)
+- COOKIE: username
+----------------------------------------------------
+*/
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!empty($_SESSION['isLogin']) && !empty($_SESSION['username'])) {
-    $username = $_SESSION['username'];
+if (!empty($_SESSION['isLogin']) && $_SESSION['isLogin'] === true) {
+
+    // Get username from cookie
+    $username = isset($_COOKIE['username'])
+        ? htmlspecialchars($_COOKIE['username'])
+        : "Guest";
+
     echo "<p style='text-align:center; font-weight:bold; color:green;'>
             Welcome back, $username!
           </p>";

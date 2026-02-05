@@ -1,5 +1,14 @@
 <?php
 session_start();
+/*
+----------------------------------------------------
+COOKIE: Read saved username (if exists)
+----------------------------------------------------
+*/
+$savedUsername = "";
+if (isset($_COOKIE['username'])) {
+    $savedUsername = $_COOKIE['username'];
+}
 
 // handle logout
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
@@ -42,26 +51,55 @@ if (isset($_POST['login'])) {
     }
 
     if ($found) {
-        $_SESSION['isLogin'] = true;
-        $_SESSION['username'] = $username;
-        $loginSuccess = true;
-        $message = "Login successful!";
-    } else {
-        $message = "Invalid username or password.";
-    }
+    // SESSION storage
+    $_SESSION['isLogin'] = true;
+    $_SESSION['username'] = $username;
+
+    // COOKIE storage (30 days)
+    setcookie(
+        "username",
+        $username,
+        time() + (30 * 24 * 60 * 60), // 30 days
+        "/"
+    );
+
+    $loginSuccess = true;
+    $message = "Login successful!";
+} else {
+    $_SESSION['isLogin'] = false;
+    $message = "Invalid username or password.";
+}
+
 }
 
 // handle create account
 if (isset($_POST['create'])) {
     $newUsername = trim($_POST['new_username']);
     $newPassword = trim($_POST['new_password']);
+
     if ($newUsername !== "" && $newPassword !== "") {
-        file_put_contents("enc_password.txt", "$newUsername,$newPassword\n", FILE_APPEND);
+
+        // Save user
+        file_put_contents(
+            "enc_password.txt",
+            "$newUsername,$newPassword\n",
+            FILE_APPEND
+        );
+
+        // COOKIE for new user (30 days)
+        setcookie(
+            "username",
+            $newUsername,
+            time() + (30 * 24 * 60 * 60),
+            "/"
+        );
+
         $message = "Account created. You can now log in!";
     } else {
         $message = "All fields are required to create account.";
     }
 }
+
 
 // date function
 function todaysDate() {
@@ -95,7 +133,9 @@ function todaysDate() {
 
     <h2>Login</h2>
     <form method="post">
-        Username: <input type="text" name="username" required><br><br>
+        Username: <input type="text" name="username"
+       value="<?php echo htmlspecialchars($savedUsername); ?>"
+       required><br><br>
         Password: <input type="password" name="password" required><br><br>
         <input type="submit" name="login" value="Login">
     </form>
