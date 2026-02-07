@@ -5,8 +5,25 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Navigation items
-$navCaptions = ["Home", "Contacts", "Products", "Find Item", "Order History", "Add Item"];
-$navLinks    = ["index.php", "contact.php", "product.php", "itemdisplay.php", "ordersdisplay.php", "add_item.php"];
+$navCaptions = [
+    "Home",
+    "Contacts",
+    "Products",
+    "Find Item",
+    "Make Order",
+    "Order History",
+    "Add Item"
+];
+
+$navLinks = [
+    "index.php",
+    "contact.php",
+    "product.php",
+    "itemdisplay.php",
+    "makeorder.php",
+    "ordersdisplay.php",
+    "add_item.php"
+];
 
 // Begin nav
 echo "<nav>";
